@@ -130,7 +130,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   auto solidDetector = new G4Box("Detector", detector_dX / 2, detector_dY / 2, detector_dZ / 2);
 
   // Tạo logical volume cho detector
-  auto logicDetector = new G4LogicalVolume(solidDetector, cryst_mat, "Detector");
+  auto logicDetector = new G4LogicalVolume(solidDetector, cryst_mat, "DetectorLV");
 
   // Đặt detector vào trong thế giới
   new G4PVPlacement(nullptr,  // Không xoay
@@ -194,7 +194,7 @@ void DetectorConstruction::ConstructSDandField()
   G4SDManager::GetSDMpointer()->AddNewDetector(cryst);
   G4VPrimitiveScorer* primitiv = new G4PSEnergyDeposit("edep");
   cryst->RegisterPrimitive(primitiv);
-  SetSensitiveDetector("Detector", cryst);
+  SetSensitiveDetector("DetectorLV", cryst);
 
   // declare patient as a MultiFunctionalDetector scorer
   //
