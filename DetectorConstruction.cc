@@ -90,7 +90,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4double ring_R2 = (ring_R1 + cryst_dZ) / cosdPhi;
   //
   G4double detector_dZ = nb_rings * cryst_dX;
-  //
+
+  //Materials
   G4NistManager* nist = G4NistManager::Instance();
   G4Material* default_mat = nist->FindOrBuildMaterial("G4_AIR");
   G4Material* cryst_mat = nist->FindOrBuildMaterial("Lu2SiO5");
@@ -98,8 +99,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   //
   // World
   //
-  G4double world_sizeXY = 2.4 * ring_R2;
-  G4double world_sizeZ = 1.2 * detector_dZ;
+  G4double world_sizeXY = 80.69 * cm;
+  G4double world_sizeZ = 64.8 * cm;
 
   auto solidWorld =
     new G4Box("World",  // its name
