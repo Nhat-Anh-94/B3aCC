@@ -78,17 +78,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 {
   // Gamma detector Parameters
   //
-  G4double cryst_dX = 6 * cm, cryst_dY = 6 * cm, cryst_dZ = 3 * cm;
-  G4int nb_cryst = 32;
-  G4int nb_rings = 9;
-  //
-  G4double dPhi = twopi / nb_cryst, half_dPhi = 0.5 * dPhi;
-  G4double cosdPhi = std::cos(half_dPhi);
-  G4double tandPhi = std::tan(half_dPhi);
-  //
-  G4double ring_R1 = 0.5 * cryst_dY / tandPhi;
-  G4double ring_R2 = (ring_R1 + cryst_dZ) / cosdPhi;
-  //
+  G4bool fCheckOverlaps = true;
   //G4double detector_dZ = nb_rings * cryst_dX;
 
   //Materials
