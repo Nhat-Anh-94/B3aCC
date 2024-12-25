@@ -190,11 +190,11 @@ void DetectorConstruction::ConstructSDandField()
   // declare crystal as a MultiFunctionalDetector scorer
   //
   // Tạo MultiFunctionalDetector cho detector hình hộp chữ nhật
-  auto cryst = new G4MultiFunctionalDetector("Detector");
-  G4SDManager::GetSDMpointer()->AddNewDetector(cryst);
+  auto detector = new G4MultiFunctionalDetector("detector");
+  G4SDManager::GetSDMpointer()->AddNewDetector(detector);
   G4VPrimitiveScorer* primitiv = new G4PSEnergyDeposit("edep");
-  cryst->RegisterPrimitive(primitiv);
-  SetSensitiveDetector("DetectorLV", cryst);
+  detector->RegisterPrimitive(primitiv);
+  SetSensitiveDetector("DetectorLV", detector);
 
   // declare patient as a MultiFunctionalDetector scorer
   //
