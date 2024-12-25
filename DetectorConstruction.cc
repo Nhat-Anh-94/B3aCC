@@ -185,29 +185,24 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 void DetectorConstruction::ConstructSDandField()
 {
-  G4SDManager::GetSDMpointer()->SetVerboseLevel(1);
+    auto sdManager = G4SDManager::GetSDMpointer();
+    sdManager->SetVerboseLevel(1);
 
-  // declare crystal as a MultiFunctionalDetector scorer
-  //
-  // Tạo MultiFunctionalDetector cho detector hình hộp chữ nhật
-  auto detector = new G4MultiFunctionalDetector("Detector");
-  G4SDManager::GetSDMpointer()->AddNewDetector(detector);
+    // MultiFunctionalDetector cho Detector
+    auto detectorSD = new G4MultiFunctionalDetector("Detector");
+    sdManager->AddNewDetector(detectorSD);
+    auto energyDeposit = new G4PSEnergyDeposit("edep");
+    detectorSD->RegisterPrimitive(energyDeposit);
+    SetSensitiveDetector("Detector", detectorSD);
 
-  // Đặt scorer cho detector để ghi nhận năng lượng nạp vào
-  G4VPrimitiveScorer* primitiv = new G4PSEnergyDeposit("edep");
-  detector->RegisterPrimitive(primitiv);
-
-  // Đặt detector làm sensitive detector
-  SetSensitiveDetector("Detector", detector);
-
-  // declare patient as a MultiFunctionalDetector scorer
-  //
-  auto patient = new G4MultiFunctionalDetector("patient");
-  G4SDManager::GetSDMpointer()->AddNewDetector(patient);
-  G4VPrimitiveScorer* primitiv2 = new G4PSDoseDeposit("dose");
-  patient->RegisterPrimitive(primitiv2);
-  SetSensitiveDetector("PatientLV", patient);
+    // MultiFunctionalDetector cho Patient
+    auto patientSD = new G4MultiFunctionalDetector("PatientLV");
+    sdManager->AddNewDetector(patientSD);
+    auto doseDeposit = new G4PSDoseDeposit("dose");
+    patientSD->RegisterPrimitive(doseDeposit);
+    SetSensitiveDetector("PatientLV", patientSD);
 }
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
