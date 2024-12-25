@@ -153,7 +153,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                       "crystal",  // its name
                       logicRing,  // its mother  volume
                       false,  // no boolean operation
-                      icrys,  // copy number
+                      0,  // copy number
                       fCheckOverlaps);  // checking overlap
 
   //
