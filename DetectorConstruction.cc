@@ -1,4 +1,4 @@
-//
+﻿//
 // ********************************************************************
 // * License and Disclaimer                                           *
 // *                                                                  *
@@ -119,80 +119,29 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                                      0,  // copy number
                                      fCheckOverlaps);  // checking overlaps
 
-  //
-  // ring
-  //
-  auto solidRing = new G4Tubs("Ring", ring_R1, ring_R2, 0.5 * cryst_dX, 0., twopi);
+//
+// Tạo khối detector hình hộp chữ nhật
+//
+  G4double detector_dX = 40 * cm;  // Kích thước theo trục X
+  G4double detector_dY = 40 * cm;  // Kích thước theo trục Y
+  G4double detector_dZ = 5 * cm;   // Kích thước theo trục Z
 
-  auto logicRing = new G4LogicalVolume(solidRing,  // its solid
-                                       default_mat,  // its material
-                                       "Ring");  // its name
+  // Tạo hình hộp chữ nhật
+  auto solidDetector = new G4Box("Detector", detector_dX / 2, detector_dY / 2, detector_dZ / 2);
 
-  //
-  // define crystal
-  //
-  G4double gap = 0.5 * mm;  // a gap for wrapping
-  G4double dX = cryst_dX - gap, dY = cryst_dY - gap;
-  auto solidCryst = new G4Box("crystal", dX / 2, dY / 2, cryst_dZ / 2);
+  // Tạo logical volume cho detector
+  auto logicDetector = new G4LogicalVolume(solidDetector, default_mat, "Detector");
 
-  auto logicCryst = new G4LogicalVolume(solidCryst,  // its solid
-                                        cryst_mat,  // its material
-                                        "CrystalLV");  // its name
+  // Đặt detector vào trong thế giới
+  new G4PVPlacement(nullptr,  // Không xoay
+      G4ThreeVector(),  // Vị trí (0, 0, 0)
+      logicDetector,  // Logical volume của detector
+      "Detector",  // Tên của detector
+      logicWorld,  // Logical volume của thế giới
+      false,  // Không có phép toán boolean
+      0,  // Số bản sao
+      fCheckOverlaps);  // Kiểm tra sự chồng lấp
 
-  // place crystals within a ring
-  //
-    G4double phi = 2 * dPhi;
-    G4RotationMatrix rotm = G4RotationMatrix();
-    rotm.rotateY(90 * deg);
-    rotm.rotateZ(phi);
-    G4ThreeVector uz = G4ThreeVector(std::cos(phi), std::sin(phi), 0.);
-    G4ThreeVector position = (ring_R1 + 0.5 * cryst_dZ) * uz;
-    G4Transform3D transform = G4Transform3D(rotm, position);
-
-    new G4PVPlacement(transform,  // rotation,position
-                      logicCryst,  // its logical volume
-                      "crystal",  // its name
-                      logicRing,  // its mother  volume
-                      false,  // no boolean operation
-                      0,  // copy number
-                      fCheckOverlaps);  // checking overlap
-
-  //
-  // full detector
-  //
-  auto solidDetector = new G4Tubs("Detector", ring_R1, ring_R2, 0.5 * detector_dZ, 0., twopi);
-
-  auto logicDetector = new G4LogicalVolume(solidDetector,  // its solid
-                                           default_mat,  // its material
-                                           "Detector");  // its name
-
-  //
-  // place rings within detector
-  //
-  G4double OG = -0.5 * (detector_dZ + cryst_dX);
-  for (G4int iring = 0; iring < nb_rings; iring++) {
-    OG += cryst_dX;
-    new G4PVPlacement(nullptr,  // no rotation
-                      G4ThreeVector(0, 0, OG),  // position
-                      logicRing,  // its logical volume
-                      "ring",  // its name
-                      logicDetector,  // its mother  volume
-                      false,  // no boolean operation
-                      iring,  // copy number
-                      fCheckOverlaps);  // checking overlaps
-  }
-
-  //
-  // place detector in world
-  //
-  new G4PVPlacement(nullptr,  // no rotation
-                    G4ThreeVector(),  // at (0,0,0)
-                    logicDetector,  // its logical volume
-                    "Detector",  // its name
-                    logicWorld,  // its mother  volume
-                    false,  // no boolean operation
-                    0,  // copy number
-                    fCheckOverlaps);  // checking overlaps
 
   //
   // patient
@@ -240,11 +189,16 @@ void DetectorConstruction::ConstructSDandField()
 
   // declare crystal as a MultiFunctionalDetector scorer
   //
-  auto cryst = new G4MultiFunctionalDetector("crystal");
-  G4SDManager::GetSDMpointer()->AddNewDetector(cryst);
-  G4VPrimitiveScorer* primitiv1 = new G4PSEnergyDeposit("edep");
-  cryst->RegisterPrimitive(primitiv1);
-  SetSensitiveDetector("CrystalLV", cryst);
+  // Tạo MultiFunctionalDetector cho detector hình hộp chữ nhật
+  auto detector = new G4MultiFunctionalDetector("Detector");
+  G4SDManager::GetSDMpointer()->AddNewDetector(detector);
+
+  // Đặt scorer cho detector để ghi nhận năng lượng nạp vào
+  G4VPrimitiveScorer* primitiv = new G4PSEnergyDeposit("edep");
+  detector->RegisterPrimitive(primitiv);
+
+  // Đặt detector làm sensitive detector
+  SetSensitiveDetector("Detector", detector);
 
   // declare patient as a MultiFunctionalDetector scorer
   //
