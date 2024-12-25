@@ -89,7 +89,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4double ring_R1 = 0.5 * cryst_dY / tandPhi;
   G4double ring_R2 = (ring_R1 + cryst_dZ) / cosdPhi;
   //
-  G4double detector_dZ = nb_rings * cryst_dX;
+  //G4double detector_dZ = nb_rings * cryst_dX;
 
   //Materials
   G4NistManager* nist = G4NistManager::Instance();
@@ -170,7 +170,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   // Visualization attributes
   //
-  logicRing->SetVisAttributes(G4VisAttributes::GetInvisible());
+  //logicRing->SetVisAttributes(G4VisAttributes::GetInvisible());
   logicDetector->SetVisAttributes(G4VisAttributes::GetInvisible());
 
   // Print materials
