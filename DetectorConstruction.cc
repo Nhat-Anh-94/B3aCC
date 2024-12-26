@@ -138,9 +138,10 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   //
   G4double patient_radius = 8 * cm;
   G4double patient_dZ = 10 * cm;
-  G4Material* patient_mat = nist->FindOrBuildMaterial("G4_BRAIN_ICRP");
+  G4Material* patient_mat = nist->FindOrBuildMaterial("G4_Si");
 
-  auto solidPatient = new G4Tubs("Patient", 0., patient_radius, 0.5 * patient_dZ, 0., twopi);
+  auto solidPatient = new G4Box("Patient", patient_radius, patient_dZ, detector_dZ / 2);
+  //auto solidPatient = new G4Tubs("Patient", 0., patient_radius, 0.5 * patient_dZ, 0., twopi);
 
   auto logicPatient = new G4LogicalVolume(solidPatient,  // its solid
                                           patient_mat,  // its material
