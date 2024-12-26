@@ -53,7 +53,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
   fParticleGun->SetParticleDefinition(particle);
   fParticleGun->SetParticlePosition(G4ThreeVector(0., 0., 0.));
   fParticleGun->SetParticleEnergy(662 * keV);
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(1., 0., 0.));
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -68,7 +68,7 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 {
 	// Vị trí phát ngẫu nhiên (tuỳ chỉnh vùng không gian nhỏ xung quanh vị trí gốc)
-	G4double x0 = 0 * cm, y0 = 0 * cm, z0 = -10 * cm;
+	G4double x0 = 0 * cm, y0 = 0 * cm, z0 = -20 * cm;
 	G4double dx0 = 1 * cm, dy0 = 1 * cm, dz0 = 1 * cm;
 	x0 += dx0 * (G4UniformRand() - 0.5);
 	y0 += dy0 * (G4UniformRand() - 0.5);
