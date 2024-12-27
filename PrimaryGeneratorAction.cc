@@ -75,6 +75,19 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 	z0 += dz0 * (G4UniformRand() - 0.5);
 	fParticleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
 
+	// Tạo hướng động lượng ngẫu nhiên trong hình nón
+	G4double coneAngle = 30 * deg;  // Góc hình nón
+	G4double cosTheta = std::cos(coneAngle);
+	G4double z = cosTheta + (1 - cosTheta) * G4UniformRand();
+	G4double phi = 2 * CLHEP::pi * G4UniformRand();
+	G4double sinTheta = std::sqrt(1 - z * z);
+
+	G4double px = sinTheta * std::cos(phi);
+	G4double py = sinTheta * std::sin(phi);
+	G4double pz = z;
+
+	fParticleGun->SetParticleMomentumDirection(G4ThreeVector(px, py, pz));
+
 	// Phát hạt gamma
 	fParticleGun->GeneratePrimaryVertex(event);
 }
