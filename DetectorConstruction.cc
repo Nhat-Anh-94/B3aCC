@@ -77,7 +77,7 @@ void DetectorConstruction::DefineMaterials()
   G4Element* Te = new G4Element("Tellurium", "Te", 1., 127.60 * g / mole);
 
   // Khai báo vật liệu CZT với tỷ lệ Zn = 0.2 (20%)
-  auto G4Material* CZT = new G4Material("CZT", 5.85 * g / cm3, 3);
+  auto CZT = new G4Material("CZT", 5.85 * g / cm3, 3);
   CZT->AddElement(Cd, 0.8);
   CZT->AddElement(Zn, 0.2);
   CZT->AddElement(Te, 1);
@@ -121,11 +121,11 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                                      fCheckOverlaps);  // checking overlaps
 
 //
-// Tạo khối detector hình hộp chữ nhật
+// Khoi hap thu CZT
 //
-  G4double detector_dX = 40 * cm;  // Kích thước theo trục X
-  G4double detector_dY = 40 * cm;  // Kích thước theo trục Y
-  G4double detector_dZ = 5 * cm;   // Kích thước theo trục Z
+  G4double detector_dX = 10 * cm;  // Kích thước theo trục X
+  G4double detector_dY = 10 * cm;  // Kích thước theo trục Y
+  G4double detector_dZ = 10 * cm;   // Kích thước theo trục Z
 
   // Tạo hình hộp chữ nhật
   auto solidDetector = new G4Box("Detector", detector_dX / 2, detector_dY / 2, detector_dZ / 2);
@@ -135,7 +135,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   // Đặt detector vào trong thế giới
   new G4PVPlacement(nullptr,  // Không xoay
-      G4ThreeVector(0, 0, 20*cm),  // Vị trí (0, 0, 0)
+      G4ThreeVector(0, 0, 5*cm),  // Vị trí (0, 0, 0)
       logicDetector,  // Logical volume của detector
       "Detector",  // Tên của detector
       logicWorld,  // Logical volume của thế giới
@@ -145,17 +145,17 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 
   //
-  // patient
+  // Khoi tan xa Si
   //
-  G4double patient_radius = 8 * cm;
-  G4double patient_dZ = 10 * cm;
-  G4Material* patient_mat = nist->FindOrBuildMaterial("G4_Si");
+  G4double compSi_X = 10 * cm;
+  G4double compSi_Y = 10 * cm;
+  G4Material* compSi_mat = nist->FindOrBuildMaterial("G4_Si");
 
-  auto solidPatient = new G4Box("Patient", patient_radius, patient_dZ, detector_dZ / 2);
+  auto solidCompSi = new G4Box("Patient", compSi_X / 2, compSi_Y / 2, compSi_Y / 10);
   //auto solidPatient = new G4Tubs("Patient", 0., patient_radius, 0.5 * patient_dZ, 0., twopi);
 
-  auto logicPatient = new G4LogicalVolume(solidPatient,  // its solid
-                                          patient_mat,  // its material
+  auto logicCompSi = new G4LogicalVolume(solidCompSi,  // its solid
+                                          compSi_mat,  // its material
                                           "PatientLV");  // its name
 
   //
@@ -163,7 +163,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   //
   new G4PVPlacement(nullptr,  // no rotation
                     G4ThreeVector(),  // at (0,0,0)
-                    logicPatient,  // its logical volume
+                    logicCompSi,  // its logical volume
                     "Patient",  // its name
                     logicWorld,  // its mother  volume
                     false,  // no boolean operation
