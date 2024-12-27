@@ -78,9 +78,9 @@ void DetectorConstruction::DefineMaterials()
 
   // Khai báo vật liệu CZT với tỷ lệ Zn = 0.2 (20%)
   auto CZT = new G4Material("CZT", 5.85 * g / cm3, 3);
-  CZT->AddElement(Cd, 0.8);
+  CZT->AddElement(Cd, 0.5);
   CZT->AddElement(Zn, 0.2);
-  CZT->AddElement(Te, 1);
+  CZT->AddElement(Te, 0.3);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
