@@ -135,7 +135,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   // Đặt detector vào trong thế giới
   new G4PVPlacement(nullptr,  // Không xoay
-      G4ThreeVector(0, 0, 5*cm),  // Vị trí (0, 0, 0)
+      G4ThreeVector(0, 0, 10*cm),  // Vị trí (0, 0, 0)
       logicDetector,  // Logical volume của detector
       "Detector",  // Tên của detector
       logicWorld,  // Logical volume của thế giới
