@@ -70,6 +70,17 @@ void DetectorConstruction::DefineMaterials()
   LSO->AddElement(Lu, 2);
   LSO->AddElement(Si, 1);
   LSO->AddElement(O, 5);
+
+  // Khai báo các nguyên tố
+  G4Element* Cd = new G4Element("Cadmium", "Cd", 1., 112.41 * g / mole);
+  G4Element* Zn = new G4Element("Zinc", "Zn", 1., 65.38 * g / mole);
+  G4Element* Te = new G4Element("Tellurium", "Te", 1., 127.60 * g / mole);
+
+  // Khai báo vật liệu CZT với tỷ lệ Zn = 0.2 (20%)
+  auto G4Material* CZT = new G4Material("CZT", 5.85 * g / cm3, 3);
+  CZT->AddElement(Cd, 0.8);
+  CZT->AddElement(Zn, 0.2);
+  CZT->AddElement(Te, 1);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -84,7 +95,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   //Materials
   G4NistManager* nist = G4NistManager::Instance();
   G4Material* default_mat = nist->FindOrBuildMaterial("G4_AIR");
-  G4Material* cryst_mat = nist->FindOrBuildMaterial("Lu2SiO5");
+  G4Material* cryst_mat = nist->FindOrBuildMaterial("CZT");
 
   //
   // World
