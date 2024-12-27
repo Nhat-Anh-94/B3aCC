@@ -100,8 +100,8 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   //
   // World
   //
-  G4double world_sizeXY = 80.69 * cm;
-  G4double world_sizeZ = 64.8 * cm;
+  G4double world_sizeXY = 20 * cm;
+  G4double world_sizeZ = 50 * cm;
 
   auto solidWorld =
     new G4Box("World",  // its name
