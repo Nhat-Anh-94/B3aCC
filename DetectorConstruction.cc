@@ -81,6 +81,30 @@ void DetectorConstruction::DefineMaterials()
   CZT->AddElement(Cd, 0.5);
   CZT->AddElement(Zn, 0.2);
   CZT->AddElement(Te, 0.3);
+
+  //Khai bao YSO(Ce)
+  G4Element* Y = man->FindOrBuildElement("Y");
+  G4Element* Si = man->FindOrBuildElement("Si");
+  G4Element* O = man->FindOrBuildElement("O");
+  G4Element* Ce = man->FindOrBuildElement("Ce");
+
+  // Mat do vat lieu
+  G4double density = 4.5 * g / cm3;
+
+  // Đinh nghia vat lieu Y2SiO5:Ce voi ty le phan tram khoi luong
+  G4Material* Y2SiO5_Ce = new G4Material("Y2SiO5_Ce", density, 4);
+
+  // Tỷ lệ phần trăm khối lượng (giả sử Ce là 0.1%)
+  G4double massFraction_Y = 0.635;   // 63.5% Y
+  G4double massFraction_Si = 0.155; // 15.5% Si
+  G4double massFraction_O = 0.209;  // 20.9% O
+  G4double massFraction_Ce = 0.001; // 0.1% Ce
+
+  // Thêm các nguyên tố theo tỷ lệ khối lượng
+  Y2SiO5_Ce->AddElement(Y, massFraction_Y);
+  Y2SiO5_Ce->AddElement(Si, massFraction_Si);
+  Y2SiO5_Ce->AddElement(O, massFraction_O);
+  Y2SiO5_Ce->AddElement(Ce, massFraction_Ce);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -95,7 +119,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   //Materials
   G4NistManager* nist = G4NistManager::Instance();
   G4Material* default_mat = nist->FindOrBuildMaterial("G4_AIR");
-  G4Material* cryst_mat = nist->FindOrBuildMaterial("CZT");
+  G4Material* cryst_mat = nist->FindOrBuildMaterial("Y2SiO5_Ce");
 
   //
   // World
@@ -121,7 +145,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
                                      fCheckOverlaps);  // checking overlaps
 
 //
-// Khoi hap thu CZT
+// Khoi hap thu cryst_mat
 //
   G4double detector_dX = 10 * cm;  // Kích thước theo trục X
   G4double detector_dY = 10 * cm;  // Kích thước theo trục Y
@@ -145,17 +169,17 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
 
   //
-  // Khoi tan xa Si
+  // Khoi tan xa cryst_mat
   //
   G4double compSi_X = 10 * cm;
   G4double compSi_Y = 10 * cm;
-  G4Material* compSi_mat = nist->FindOrBuildMaterial("G4_Si");
+  //G4Material* compSi_mat = nist->FindOrBuildMaterial("G4_Si");
 
   auto solidCompSi = new G4Box("Patient", compSi_X / 2, compSi_Y / 2, compSi_Y / 10);
   //auto solidPatient = new G4Tubs("Patient", 0., patient_radius, 0.5 * patient_dZ, 0., twopi);
 
   auto logicCompSi = new G4LogicalVolume(solidCompSi,  // its solid
-                                          compSi_mat,  // its material
+                                          cryst_mat,  // its material
                                           "PatientLV");  // its name
 
   //
