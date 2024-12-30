@@ -84,8 +84,8 @@ void DetectorConstruction::DefineMaterials()
 
   //Khai bao YSO(Ce)
   G4Element* Y = man->FindOrBuildElement("Y");
-  G4Element* Si = man->FindOrBuildElement("Si");
-  G4Element* O = man->FindOrBuildElement("O");
+  //G4Element* Si = man->FindOrBuildElement("Si");
+  //G4Element* O = man->FindOrBuildElement("O");
   G4Element* Ce = man->FindOrBuildElement("Ce");
 
   // Mat do vat lieu
