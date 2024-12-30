@@ -43,7 +43,7 @@ namespace B3
 
 PrimaryGeneratorAction::PrimaryGeneratorAction()
 {
-  G4int n_particle = 100;
+  G4int n_particle = 1000;
   fParticleGun = new G4ParticleGun(n_particle);
 
   // default particle kinematic
