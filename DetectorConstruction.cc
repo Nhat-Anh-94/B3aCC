@@ -116,7 +116,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   // World
   //
   G4double world_sizeXY = 20 * cm;
-  G4double world_sizeZ = 50 * cm;
+  G4double world_sizeZ = 100 * cm;
 
   auto solidWorld =
     new G4Box("World",  // its name
@@ -150,7 +150,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   // Đặt detector vào trong thế giới
   new G4PVPlacement(nullptr,  // Không xoay
-      G4ThreeVector(0, 0, 10*cm),  // Vị trí (0, 0, 0)
+      G4ThreeVector(0, 0, 4.3*cm),  // Vị trí (0, 0, 0)
       logicDetector,  // Logical volume của detector
       "Detector",  // Tên của detector
       logicWorld,  // Logical volume của thế giới
