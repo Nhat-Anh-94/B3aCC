@@ -62,30 +62,10 @@ void DetectorConstruction::DefineMaterials()
 
   G4bool isotopes = false;
 
+  //Khai bao YSO(Ce)
   G4Element* O = man->FindOrBuildElement("O", isotopes);
   G4Element* Si = man->FindOrBuildElement("Si", isotopes);
-  G4Element* Lu = man->FindOrBuildElement("Lu", isotopes);
-
-  auto LSO = new G4Material("Lu2SiO5", 7.4 * g / cm3, 3);
-  LSO->AddElement(Lu, 2);
-  LSO->AddElement(Si, 1);
-  LSO->AddElement(O, 5);
-
-  // Khai báo các nguyên tố
-  G4Element* Cd = new G4Element("Cadmium", "Cd", 1., 112.41 * g / mole);
-  G4Element* Zn = new G4Element("Zinc", "Zn", 1., 65.38 * g / mole);
-  G4Element* Te = new G4Element("Tellurium", "Te", 1., 127.60 * g / mole);
-
-  // Khai báo vật liệu CZT với tỷ lệ Zn = 0.2 (20%)
-  auto CZT = new G4Material("CZT", 5.85 * g / cm3, 3);
-  CZT->AddElement(Cd, 0.5);
-  CZT->AddElement(Zn, 0.2);
-  CZT->AddElement(Te, 0.3);
-
-  //Khai bao YSO(Ce)
   G4Element* Y = man->FindOrBuildElement("Y");
-  //G4Element* Si = man->FindOrBuildElement("Si");
-  //G4Element* O = man->FindOrBuildElement("O");
   G4Element* Ce = man->FindOrBuildElement("Ce");
 
   // Mat do vat lieu
@@ -105,6 +85,17 @@ void DetectorConstruction::DefineMaterials()
   Y2SiO5_Ce->AddElement(Si, massFraction_Si);
   Y2SiO5_Ce->AddElement(O, massFraction_O);
   Y2SiO5_Ce->AddElement(Ce, massFraction_Ce);
+
+  // Khai báo các nguyên tố
+  G4Element* Cd = new G4Element("Cadmium", "Cd", 1., 112.41 * g / mole);
+  G4Element* Zn = new G4Element("Zinc", "Zn", 1., 65.38 * g / mole);
+  G4Element* Te = new G4Element("Tellurium", "Te", 1., 127.60 * g / mole);
+
+  // Khai báo vật liệu CZT với tỷ lệ Zn = 0.2 (20%)
+  auto CZT = new G4Material("CZT", 5.85 * g / cm3, 3);
+  CZT->AddElement(Cd, 0.5);
+  CZT->AddElement(Zn, 0.2);
+  CZT->AddElement(Te, 0.3);
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -149,7 +140,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //
   G4double detector_dX = 10 * cm;  // Kích thước theo trục X
   G4double detector_dY = 10 * cm;  // Kích thước theo trục Y
-  G4double detector_dZ = 10 * cm;   // Kích thước theo trục Z
+  G4double detector_dZ = 0.6 * cm;   // Kích thước theo trục Z
 
   // Tạo hình hộp chữ nhật
   auto solidDetector = new G4Box("Detector", detector_dX / 2, detector_dY / 2, detector_dZ / 2);
@@ -175,7 +166,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4double compSi_Y = 10 * cm;
   //G4Material* compSi_mat = nist->FindOrBuildMaterial("G4_Si");
 
-  auto solidCompSi = new G4Box("Patient", compSi_X / 2, compSi_Y / 2, compSi_Y / 10);
+  auto solidCompSi = new G4Box("Patient", compSi_X / 2, compSi_Y / 2, 0.3 * cm);
   //auto solidPatient = new G4Tubs("Patient", 0., patient_radius, 0.5 * patient_dZ, 0., twopi);
 
   auto logicCompSi = new G4LogicalVolume(solidCompSi,  // its solid
