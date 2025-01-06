@@ -35,8 +35,6 @@
 
 //Compton scattering
 #include "G4EmStandardPhysics_option1.hh"  // Chỉ thêm các tương tác EM cơ bản
-#include "G4LossTableManager.hh"
-#include "G4EmProcessOptions.hh"
 
 namespace B3
 {
