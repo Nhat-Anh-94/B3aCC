@@ -3,8 +3,8 @@
 #
 # Change the default number of workers (in multi-threading mode) 
 #
-/run/numberOfThreads 4
-/control/cout/ignoreThreadsExcept 0
+#/run/numberOfThreads 4
+#/control/cout/ignoreThreadsExcept 0
 # Initialize kernel
 /run/initialize
 #
