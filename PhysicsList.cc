@@ -48,8 +48,19 @@ PhysicsList::PhysicsList()
 {
   SetVerboseLevel(1);
 
+  // Lấy Process Manager của photon
+  G4ProcessManager* pmanager = G4Gamma::Gamma()->GetProcessManager();
+
+  // Tạo các quá trình quang điện và tán xạ Compton
+  G4PhotoElectricEffect* photoelectric = new G4PhotoElectricEffect();
+  G4ComptonScattering* compton = new G4ComptonScattering();
+
+  // Thêm các quá trình này vào Process Manager
+  pmanager->AddProcess(photoelectric, -1, 3, 3); // Quang điện
+  pmanager->AddProcess(compton, -1, 2, 2); // Tán xạ Compton
+
   // Chỉ thêm các quá trình EM cơ bản
-  RegisterPhysics(new G4EmStandardPhysics_option1());
+  //RegisterPhysics(new G4EmStandardPhysics_option1());
 
   // Default physics
   //RegisterPhysics(new G4DecayPhysics());
