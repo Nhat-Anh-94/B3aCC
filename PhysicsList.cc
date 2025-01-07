@@ -48,20 +48,8 @@ PhysicsList::PhysicsList()
 {
   SetVerboseLevel(1);
 
-  // Lấy đối tượng photon và quản lý quá trình của nó
-  G4ParticleDefinition* gamma = G4Gamma::GammaDefinition();
-  G4ProcessManager* pManager = gamma->GetProcessManager();
-
-  // Thêm quá trình tán xạ Compton
-  G4ComptonScattering* comptonEffect = new G4ComptonScattering();
-  pManager->AddProcess(comptonEffect, 0, 2, 2);  // 2: after transportation
-
-  // Thêm quá trình hấp thụ quang điện
-  G4PhotoElectricEffect* photoEffect = new G4PhotoElectricEffect();
-  pManager->AddProcess(photoEffect, 0, 1, 1);   // 1: before scattering
-
   // Chỉ thêm các quá trình EM cơ bản
-  //RegisterPhysics(new G4EmStandardPhysics_option1());
+  RegisterPhysics(new G4EmStandardPhysics_option1());
 
   // Default physics
   //RegisterPhysics(new G4DecayPhysics());
