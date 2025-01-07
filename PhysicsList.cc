@@ -35,6 +35,9 @@
 
 //Compton scattering
 #include "G4EmStandardPhysics_option1.hh"  // Chỉ thêm các tương tác EM cơ bản
+#include "G4PhotoElectricEffect.hh"        // Hấp thụ quang điện
+#include "G4ComptonScattering.hh"          // Tán xạ Compton
+#include "G4ProcessManager.hh"             // Quản lý quá trình
 
 namespace B3
 {
