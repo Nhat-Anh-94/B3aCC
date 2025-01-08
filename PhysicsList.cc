@@ -69,7 +69,7 @@ void PhysicsList::ConstructProcess()
         }
 
         // Xóa các quá trình cũ nếu có
-        processManager->RemoveAllProcesses();
+        //processManager->RemoveAllProcesses();
 
         // Thêm quá trình hấp thụ quang điện
         auto photoelectricEffect = new G4PhotoElectricEffect();
