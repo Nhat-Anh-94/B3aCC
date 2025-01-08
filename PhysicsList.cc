@@ -51,6 +51,14 @@ namespace B3
 PhysicsList::PhysicsList()
 {
   SetVerboseLevel(1);
+  // Khởi tạo các hạt (bao gồm gamma) trước khi thêm các quá trình
+  ConstructParticle();
+}
+
+void PhysicsList::ConstructParticle()
+{
+    // Khởi tạo hạt gamma (nếu chưa được khởi tạo)
+    G4Gamma::Gamma();
 }
 
 void PhysicsList::ConstructProcess()
