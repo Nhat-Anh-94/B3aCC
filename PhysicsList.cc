@@ -39,13 +39,6 @@
 #include "G4ComptonScattering.hh"          // Tán xạ Compton
 #include "G4ProcessManager.hh"             // Quản lý quá trình
 
-#include "G4ParticleDefinition.hh"
-#include "G4ParticleTable.hh"
-#include "G4Gamma.hh"
-
-#include "G4Electron.hh"   // Thêm định nghĩa hạt electron
-#include "G4Positron.hh"   // Thêm định nghĩa hạt positron
-
 namespace B3
 {
 
@@ -54,80 +47,19 @@ namespace B3
 PhysicsList::PhysicsList()
 {
   SetVerboseLevel(1);
-  // Khởi tạo các hạt (bao gồm gamma) trước khi thêm các quá trình
-  ConstructParticle();
 
-  // Khởi tạo các quá trình khác
-  ConstructProcess();
+  // Chỉ thêm các quá trình EM cơ bản
+  RegisterPhysics(new G4EmStandardPhysics_option1());
+
+  // Default physics
+  //RegisterPhysics(new G4DecayPhysics());
+
+  // EM physics
+  //RegisterPhysics(new G4EmStandardPhysics());
+
+  // Radioactive decay
+  //RegisterPhysics(new G4RadioactiveDecayPhysics());
 }
-
-void PhysicsList::ConstructParticle()
-{
-    // Khởi tạo hạt gamma (nếu chưa được khởi tạo)
-    G4Gamma::Gamma();
-
-    G4Electron::Electron();
-    G4Positron::Positron();
-}
-
-void PhysicsList::ConstructProcess()
-{
-    // Lấy danh sách hạt từ G4ParticleTable
-    auto particleTable = G4ParticleTable::GetParticleTable();
-    auto gamma = G4Gamma::Gamma();
-
-    if (gamma)
-    {
-        auto processManager = gamma->GetProcessManager();
-        if (!processManager)
-        {
-            G4Exception("PhysicsList::ConstructProcess", "NoProcessManager",
-                FatalException, "G4Gamma does not have a process manager!");
-        }
-
-        // Xóa các quá trình cũ nếu có
-        //processManager->RemoveAllProcesses();
-
-        // Thêm quá trình hấp thụ quang điện
-        auto photoelectricEffect = new G4PhotoElectricEffect();
-        processManager->AddDiscreteProcess(photoelectricEffect);
-
-        // Thêm quá trình tán xạ Compton
-        auto comptonScattering = new G4ComptonScattering();
-        processManager->AddDiscreteProcess(comptonScattering);
-    }
-
-    // Khởi tạo các quá trình cho electron
-    auto electron = G4Electron::Electron();
-    if (electron)
-    {
-        auto processManager = electron->GetProcessManager();
-        if (!processManager)
-        {
-            G4Exception("PhysicsList::ConstructProcess", "NoProcessManager",
-                FatalException, "G4Electron does not have a process manager!");
-        }
-
-        // Thêm các quá trình cho electron nếu cần
-        // processManager->AddProcess(...);
-    }
-
-    // Khởi tạo các quá trình cho positron
-    auto positron = G4Positron::Positron();
-    if (positron)
-    {
-        auto processManager = positron->GetProcessManager();
-        if (!processManager)
-        {
-            G4Exception("PhysicsList::ConstructProcess", "NoProcessManager",
-                FatalException, "G4Positron does not have a process manager!");
-        }
-
-        // Thêm các quá trình cho positron nếu cần
-        // processManager->AddProcess(...);
-    }
-}
-
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
