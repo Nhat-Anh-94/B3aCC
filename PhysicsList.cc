@@ -43,6 +43,9 @@
 #include "G4ParticleTable.hh"
 #include "G4Gamma.hh"
 
+#include "G4Electron.hh"   // Thêm định nghĩa hạt electron
+#include "G4Positron.hh"   // Thêm định nghĩa hạt positron
+
 namespace B3
 {
 
