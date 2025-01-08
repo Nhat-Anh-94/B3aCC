@@ -39,6 +39,10 @@
 #include "G4ComptonScattering.hh"          // Tán xạ Compton
 #include "G4ProcessManager.hh"             // Quản lý quá trình
 
+#include "G4ParticleDefinition.hh"
+#include "G4ParticleTable.hh"
+#include "G4Gamma.hh"
+
 namespace B3
 {
 
@@ -47,18 +51,34 @@ namespace B3
 PhysicsList::PhysicsList()
 {
   SetVerboseLevel(1);
+}
 
-  // Chỉ thêm các quá trình EM cơ bản
-  RegisterPhysics(new G4EmStandardPhysics_option1());
+void PhysicsList::ConstructProcess()
+{
+    // Lấy danh sách hạt từ G4ParticleTable
+    auto particleTable = G4ParticleTable::GetParticleTable();
+    auto gamma = G4Gamma::Gamma();
 
-  // Default physics
-  //RegisterPhysics(new G4DecayPhysics());
+    if (gamma)
+    {
+        auto processManager = gamma->GetProcessManager();
+        if (!processManager)
+        {
+            G4Exception("PhysicsList::ConstructProcess", "NoProcessManager",
+                FatalException, "G4Gamma does not have a process manager!");
+        }
 
-  // EM physics
-  //RegisterPhysics(new G4EmStandardPhysics());
+        // Xóa các quá trình cũ nếu có
+        processManager->RemoveAllProcesses();
 
-  // Radioactive decay
-  //RegisterPhysics(new G4RadioactiveDecayPhysics());
+        // Thêm quá trình hấp thụ quang điện
+        auto photoelectricEffect = new G4PhotoElectricEffect();
+        processManager->AddDiscreteProcess(photoelectricEffect);
+
+        // Thêm quá trình tán xạ Compton
+        auto comptonScattering = new G4ComptonScattering();
+        processManager->AddDiscreteProcess(comptonScattering);
+    }
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
