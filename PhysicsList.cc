@@ -53,12 +53,18 @@ PhysicsList::PhysicsList()
   SetVerboseLevel(1);
   // Khởi tạo các hạt (bao gồm gamma) trước khi thêm các quá trình
   ConstructParticle();
+
+  // Khởi tạo các quá trình khác
+  ConstructProcess();
 }
 
 void PhysicsList::ConstructParticle()
 {
     // Khởi tạo hạt gamma (nếu chưa được khởi tạo)
     G4Gamma::Gamma();
+
+    G4Electron::Electron();
+    G4Positron::Positron();
 }
 
 void PhysicsList::ConstructProcess()
@@ -87,7 +93,12 @@ void PhysicsList::ConstructProcess()
         auto comptonScattering = new G4ComptonScattering();
         processManager->AddDiscreteProcess(comptonScattering);
     }
+
+    // Khởi tạo các quá trình cho electron và positron (nếu cần)
+    auto electron = G4Electron::Electron();
+    auto positron = G4Positron::Positron();
 }
+
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
