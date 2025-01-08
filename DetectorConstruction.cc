@@ -87,15 +87,15 @@ void DetectorConstruction::DefineMaterials()
   Y2SiO5_Ce->AddElement(Ce, massFraction_Ce);
 
   // Khai báo các nguyên tố
-  G4Element* Cd = new G4Element("Cadmium", "Cd", 1., 112.41 * g / mole);
-  G4Element* Zn = new G4Element("Zinc", "Zn", 1., 65.38 * g / mole);
-  G4Element* Te = new G4Element("Tellurium", "Te", 1., 127.60 * g / mole);
+  //G4Element* Cd = new G4Element("Cadmium", "Cd", 1., 112.41 * g / mole);
+  //G4Element* Zn = new G4Element("Zinc", "Zn", 1., 65.38 * g / mole);
+  //G4Element* Te = new G4Element("Tellurium", "Te", 1., 127.60 * g / mole);
 
   // Khai báo vật liệu CZT với tỷ lệ Zn = 0.2 (20%)
-  auto CZT = new G4Material("CZT", 5.85 * g / cm3, 3);
+  /*auto CZT = new G4Material("CZT", 5.85 * g / cm3, 3);
   CZT->AddElement(Cd, 0.5);
   CZT->AddElement(Zn, 0.2);
-  CZT->AddElement(Te, 0.3);
+  CZT->AddElement(Te, 0.3);*/
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
