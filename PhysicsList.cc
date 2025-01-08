@@ -97,9 +97,35 @@ void PhysicsList::ConstructProcess()
         processManager->AddDiscreteProcess(comptonScattering);
     }
 
-    // Khởi tạo các quá trình cho electron và positron (nếu cần)
+    // Khởi tạo các quá trình cho electron
     auto electron = G4Electron::Electron();
+    if (electron)
+    {
+        auto processManager = electron->GetProcessManager();
+        if (!processManager)
+        {
+            G4Exception("PhysicsList::ConstructProcess", "NoProcessManager",
+                FatalException, "G4Electron does not have a process manager!");
+        }
+
+        // Thêm các quá trình cho electron nếu cần
+        // processManager->AddProcess(...);
+    }
+
+    // Khởi tạo các quá trình cho positron
     auto positron = G4Positron::Positron();
+    if (positron)
+    {
+        auto processManager = positron->GetProcessManager();
+        if (!processManager)
+        {
+            G4Exception("PhysicsList::ConstructProcess", "NoProcessManager",
+                FatalException, "G4Positron does not have a process manager!");
+        }
+
+        // Thêm các quá trình cho positron nếu cần
+        // processManager->AddProcess(...);
+    }
 }
 
 
