@@ -51,7 +51,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
   G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
   G4ParticleDefinition* particle = particleTable->FindParticle("gamma");
   fParticleGun->SetParticleDefinition(particle);
-  fParticleGun->SetParticlePosition(G4ThreeVector(0., 0., -30.));
+  fParticleGun->SetParticlePosition(G4ThreeVector(0., 0., -31.));
   fParticleGun->SetParticleEnergy(662 * keV);
   fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0., 0., 1.));
 }
@@ -68,8 +68,8 @@ PrimaryGeneratorAction::~PrimaryGeneratorAction()
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 {
 	// Vị trí phát ngẫu nhiên (tuỳ chỉnh vùng không gian nhỏ xung quanh vị trí gốc)
-	G4double x0 = 0 * cm, y0 = 0 * cm, z0 = -21 * cm;
-	G4double dx0 = 1 * cm, dy0 = 1 * cm, dz0 = 1 * cm;
+	G4double x0 = 0 * cm, y0 = 0 * cm, z0 = -31 * cm;
+	G4double dx0 = 0.1 * cm, dy0 = 0.1 * cm, dz0 = 0.1 * cm;
 	x0 += dx0 * (G4UniformRand() - 0.1);
 	y0 += dy0 * (G4UniformRand() - 0.1);
 	z0 += dz0 * (G4UniformRand() - 0.1);
