@@ -140,7 +140,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 //
   G4double detector_dX = 10 * cm;  // Kích thước theo trục X
   G4double detector_dY = 10 * cm;  // Kích thước theo trục Y
-  G4double detector_dZ = 0.6 * cm;   // Kích thước theo trục Z
+  G4double detector_dZ = 5 * cm;   // Kích thước theo trục Z
 
   // Tạo hình hộp chữ nhật
   auto solidDetector = new G4Box("Detector", detector_dX / 2, detector_dY / 2, detector_dZ / 2);
@@ -150,7 +150,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
 
   // Đặt detector vào trong thế giới
   new G4PVPlacement(nullptr,  // Không xoay
-      G4ThreeVector(0, 0, 4.3*cm),  // Vị trí (0, 0, 0)
+      G4ThreeVector(0, 0, 7.8*cm),  // Vị trí (0, 0, 0)
       logicDetector,  // Logical volume của detector
       "Detector",  // Tên của detector
       logicWorld,  // Logical volume của thế giới
@@ -166,7 +166,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
   G4double compSi_Y = 10 * cm;
   //G4Material* compSi_mat = nist->FindOrBuildMaterial("G4_Si");
 
-  auto solidCompSi = new G4Box("Patient", compSi_X / 2, compSi_Y / 2, 0.3 * cm);
+  auto solidCompSi = new G4Box("Patient", compSi_X / 2, compSi_Y / 2, 0.6 * cm);
   //auto solidPatient = new G4Tubs("Patient", 0., patient_radius, 0.5 * patient_dZ, 0., twopi);
 
   auto logicCompSi = new G4LogicalVolume(solidCompSi,  // its solid
