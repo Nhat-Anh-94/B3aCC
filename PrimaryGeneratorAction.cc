@@ -76,7 +76,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 	fParticleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
 
 	// Tạo hướng động lượng ngẫu nhiên trong hình nón
-	G4double coneAngle = 10 * deg;  // Góc hình nón
+	G4double coneAngle = 0 * deg;  // Góc hình nón
 	G4double cosTheta = std::cos(coneAngle);
 	G4double z = cosTheta + (1 - cosTheta) * G4UniformRand();
 	G4double phi = 2 * CLHEP::pi * G4UniformRand();
