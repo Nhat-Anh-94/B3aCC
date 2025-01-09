@@ -43,7 +43,7 @@ namespace B3
 
 PrimaryGeneratorAction::PrimaryGeneratorAction()
 {
-  G4int n_particle = 150;
+  G4int n_particle = 1;
   fParticleGun = new G4ParticleGun(n_particle);
 
   // default particle kinematic
@@ -53,7 +53,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
   fParticleGun->SetParticleDefinition(particle);
   fParticleGun->SetParticlePosition(G4ThreeVector(0., 0., -31.));
   fParticleGun->SetParticleEnergy(662 * keV);
-  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0.2, 0.2, 1.));
+  fParticleGun->SetParticleMomentumDirection(G4ThreeVector(0, 0, 1.));
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
@@ -76,7 +76,7 @@ void PrimaryGeneratorAction::GeneratePrimaries(G4Event* event)
 	fParticleGun->SetParticlePosition(G4ThreeVector(x0, y0, z0));
 
 	// Tạo hướng động lượng ngẫu nhiên trong hình nón
-	G4double coneAngle = 0 * deg;  // Góc hình nón
+	G4double coneAngle = 17 * deg;  // Góc hình nón
 	G4double cosTheta = std::cos(coneAngle);
 	G4double z = cosTheta + (1 - cosTheta) * G4UniformRand();
 	G4double phi = 2 * CLHEP::pi * G4UniformRand();
