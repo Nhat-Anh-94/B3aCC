@@ -26,7 +26,6 @@
 //
 /// \file B3/B3a/src/EventAction.cc
 /// \brief Implementation of the B3a::EventAction class
-#include "G4UImanager.hh"
 
 #include "EventAction.hh"
 
@@ -96,40 +95,7 @@ void EventAction::EndOfEventAction(const G4Event* evt)
   }
   if (dose > 0.) fRunAction->SumDose(dose);
 
-  // Tạo tên file và ghi vào file riêng biệt cho mỗi sự kiện
-  G4int eventID = evt->GetEventID();
-  std::stringstream filename;
-  filename << "event_" << eventID << "_log.txt";  // Tên file: event_<eventID>_log.txt
-
-  std::ofstream outFile(filename.str());
-  if (outFile.is_open()) {
-      // Ghi thông tin sự kiện vào file
-      outFile << "Sự kiện ID: " << eventID << "\n";
-      outFile << "Số lượng hạt phát ra: " << nbOfFired << "\n";
-      outFile << "Liều lượng tại bệnh nhân: " << dose / gray << " Gy\n";
-
-      // Tạo một file log riêng cho verbose
-      std::ofstream verboseFile("verbose_output_event_" + std::to_string(eventID) + ".txt");
-
-      if (verboseFile.is_open()) {
-          // Chuyển hướng đầu ra của verbose vào file log này
-          G4UImanager* uiManager = G4UImanager::GetUIpointer();
-          std::streambuf* originalCoutBuf = std::cout.rdbuf();  // Lưu lại bộ đệm stdout
-          std::cout.rdbuf(verboseFile.rdbuf());  // Chuyển hướng G4cout vào file log
-
-          // Lệnh verbose
-          uiManager->ApplyCommand("/control/verbose 2");  // Đặt mức độ verbose cho control
-          uiManager->ApplyCommand("/tracking/verbose 2"); // Đặt mức độ verbose cho tracking
-
-          // Đảm bảo thông tin được ghi vào file
-          std::cout.rdbuf(originalCoutBuf);  // Quay lại stdout mặc định
-          verboseFile.close();  // Đóng file verbose output
-      }
-
-  }
-  else {
-      G4cerr << "Không thể mở file: " << filename.str() << G4endl;
-  }
+ 
 }
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
