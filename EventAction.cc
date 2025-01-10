@@ -26,6 +26,7 @@
 //
 /// \file B3/B3a/src/EventAction.cc
 /// \brief Implementation of the B3a::EventAction class
+#include "G4UImanager.hh"
 
 #include "EventAction.hh"
 
