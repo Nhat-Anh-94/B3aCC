@@ -12,5 +12,5 @@
 /tracking/verbose 1
 #
 /run/beamOn 100
-/vis/scene/endOfEventAction accumulate -1
+/vis/scene/endOfEventAction accumulate 30
 
