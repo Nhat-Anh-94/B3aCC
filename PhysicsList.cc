@@ -38,6 +38,7 @@
 #include "G4PhotoElectricEffect.hh"        // Hấp thụ quang điện
 #include "G4ComptonScattering.hh"          // Tán xạ Compton
 #include "G4ProcessManager.hh"             // Quản lý quá trình
+#include "G4GammaConversion.hh"
 
 namespace B3
 {
@@ -46,10 +47,18 @@ namespace B3
 
 PhysicsList::PhysicsList()
 {
-  SetVerboseLevel(1);
+  SetVerboseLevel(2);
 
   // Chỉ thêm các quá trình EM cơ bản
-  RegisterPhysics(new G4EmStandardPhysics_option1());
+  //RegisterPhysics(new G4EmStandardPhysics_option1());
+
+  // Lấy đối tượng ProcessManager cho photon
+  G4ProcessManager* pmanager = G4Gamma::Gamma()->GetProcessManager();
+
+  // Thêm các quá trình vật lý photon
+  pmanager->AddProcess(new G4ComptonScattering, -1, 3, 3);
+  pmanager->AddProcess(new G4PhotoElectricEffect, -1, 2, 2);
+  pmanager->AddProcess(new G4GammaConversion, -1, 4, 4);
 
   // Default physics
   //RegisterPhysics(new G4DecayPhysics());
