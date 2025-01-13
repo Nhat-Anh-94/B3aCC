@@ -74,7 +74,7 @@ int main(int argc, char** argv)
   runManager->SetUserInitialization(new B3a::ActionInitialization());
 
   //
-  runManager->SetNumberOfThreads(4); // Thi?t l?p ch?y v?i 4 lu?ng
+  //runManager->SetNumberOfThreads(4); // Thi?t l?p ch?y v?i 4 lu?ng
 
   // Initialize visualization
   //
