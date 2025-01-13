@@ -69,14 +69,14 @@ void EventAction::EndOfEventAction(const G4Event* evt)
 
   // Energy in crystals : identify 'good events'
   //
-  const G4double eThreshold = 700 * keV;
+  //const G4double eThreshold = 0 * keV;
   G4int nbOfFired = 0;
 
   auto evtMap = static_cast<G4THitsMap<G4double>*>(HCE->GetHC(fCollID_cryst));
 
   for (auto& mapElement : (*evtMap->GetMap())) {
     auto edep = *(mapElement.second);
-    if (edep > eThreshold) ++nbOfFired;
+    ++nbOfFired;
     // auto copyNb  = mapElement.first;
     // G4cout << "\n  cryst" << copyNb << ": " << edep/keV << " keV ";
   }
