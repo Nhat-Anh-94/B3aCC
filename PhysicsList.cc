@@ -47,7 +47,7 @@ namespace B3
 
 PhysicsList::PhysicsList()
 {
-  SetVerboseLevel(2);
+  SetVerboseLevel(0);
 
   // Chỉ thêm các quá trình EM cơ bản
   RegisterPhysics(new G4EmStandardPhysics_option1());

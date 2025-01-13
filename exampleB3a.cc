@@ -92,7 +92,7 @@ int main(int argc, char** argv)
   // The default file type ("root") can be changed in xml, csv, hdf5
   // scoreNtupleWriter.SetDefaultFileType("xml");
   G4TScoreNtupleWriter<G4AnalysisManager> scoreNtupleWriter;
-  scoreNtupleWriter.SetVerboseLevel(2);
+  scoreNtupleWriter.SetVerboseLevel(0);
   scoreNtupleWriter.SetNtupleMerging(true);
   // Note: merging ntuples is available only with Root output
   // (the default in G4TScoreNtupleWriter)
