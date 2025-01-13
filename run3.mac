@@ -11,12 +11,12 @@
 /control/verbose 0
 /tracking/verbose 2
 #
-/run/beamOn 1
-/run/beamOn 1
-/run/beamOn 1
-/run/beamOn 1
-/run/beamOn 1
-/run/beamOn 1
-/run/beamOn 1
+/run/beamOn 1 > out1.txt
+/run/beamOn 1 > out1.txt
+/run/beamOn 1 > out1.txt
+/run/beamOn 1 > out1.txt
+/run/beamOn 1 > out1.txt
+/run/beamOn 1 > out1.txt
+/run/beamOn 1 > out1.txt
 
 
