@@ -111,7 +111,7 @@ int main(int argc, char** argv)
 
     UImanager->ApplyCommand("/tracking/verbose 2");
     // Add a loop for /run/beamOn
-    for (int i = 0; i < 8; ++i) { // Lặp lại 10 lần
+    for (int i = 0; i < 7; ++i) { // Lặp lại 10 lần
         UImanager->ApplyCommand("/run/beamOn 1");
     }
     ui->SessionStart();
