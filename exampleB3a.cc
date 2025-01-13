@@ -1,4 +1,4 @@
-//
+﻿//
 // ********************************************************************
 // * License and Disclaimer                                           *
 // *                                                                  *
@@ -108,6 +108,11 @@ int main(int argc, char** argv)
   else {
     // interactive mode
     UImanager->ApplyCommand("/control/execute init_vis.mac");
+
+    // Add a loop for /run/beamOn
+    for (int i = 0; i < 7; ++i) { // Lặp lại 10 lần
+        UImanager->ApplyCommand("/run/beamOn 1");
+    }
     ui->SessionStart();
     delete ui;
   }
