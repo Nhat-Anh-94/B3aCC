@@ -55,9 +55,9 @@ PhysicsList::PhysicsList()
   // Lấy đối tượng ProcessManager cho photon
   G4ProcessManager* pmanager = G4Gamma::Gamma()->GetProcessManager();
 
-  // Thêm các quá trình vật lý photon
-  pmanager->AddProcess(new G4ComptonScattering, -1, 3, 3);
+  // Thêm các quá trình vật lý photon vào danh sách
   pmanager->AddProcess(new G4PhotoElectricEffect, -1, 2, 2);
+  pmanager->AddProcess(new G4ComptonScattering, -1, 3, 3);
   pmanager->AddProcess(new G4GammaConversion, -1, 4, 4);
 
   // Default physics
