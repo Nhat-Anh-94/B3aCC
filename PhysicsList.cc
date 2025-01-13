@@ -50,15 +50,7 @@ PhysicsList::PhysicsList()
   SetVerboseLevel(2);
 
   // Chỉ thêm các quá trình EM cơ bản
-  //RegisterPhysics(new G4EmStandardPhysics_option1());
-
-  // Lấy đối tượng ProcessManager cho photon
-  G4ProcessManager* pmanager = G4Gamma::Gamma()->GetProcessManager();
-
-  // Thêm các quá trình vật lý photon vào danh sách
-  pmanager->AddProcess(new G4PhotoElectricEffect, -1, 2, 2);
-  pmanager->AddProcess(new G4ComptonScattering, -1, 3, 3);
-  pmanager->AddProcess(new G4GammaConversion, -1, 4, 4);
+  RegisterPhysics(new G4EmStandardPhysics_option1());
 
   // Default physics
   //RegisterPhysics(new G4DecayPhysics());
