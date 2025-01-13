@@ -8,7 +8,7 @@
 # Initialize kernel
 /run/initialize
 #
-/control/verbose 2
+/control/verbose 1
 /tracking/verbose 2
 #
 /run/beamOn 1
