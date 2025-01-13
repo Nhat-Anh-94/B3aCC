@@ -84,16 +84,16 @@ void EventAction::EndOfEventAction(const G4Event* evt)
 
   // Dose deposit in patient
   //
-  G4double dose = 0.;
+  //G4double dose = 0.;
 
-  evtMap = static_cast<G4THitsMap<G4double>*>(HCE->GetHC(fCollID_patient));
+  //evtMap = static_cast<G4THitsMap<G4double>*>(HCE->GetHC(fCollID_patient));
 
-  for (auto& mapElement : (*evtMap->GetMap())) {
-    dose += *(mapElement.second);
-    // auto copyNb  = mapElement.first;
-    // G4cout << "\n  patient" << copyNb << ": " << G4BestUnit(dose,"Dose");
-  }
-  if (dose > 0.) fRunAction->SumDose(dose);
+  //for (auto& mapElement : (*evtMap->GetMap())) {
+  //  dose += *(mapElement.second);
+  //  // auto copyNb  = mapElement.first;
+  //  // G4cout << "\n  patient" << copyNb << ": " << G4BestUnit(dose,"Dose");
+  //}
+  //if (dose > 0.) fRunAction->SumDose(dose);
 
  
 }
