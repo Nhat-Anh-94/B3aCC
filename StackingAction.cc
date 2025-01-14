@@ -1,16 +1,16 @@
-﻿#include "StackingAction.hh"
+﻿// StackingAction.cc
+
+#include "StackingAction.hh"
 #include "G4Track.hh"
 #include "G4Step.hh"
 #include "G4SystemOfUnits.hh"
 #include "G4NeutrinoE.hh"
-#include <fstream>  // Thư viện ghi file
+#include <fstream>
 
 namespace B3
 {
 
-    //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
-    // Constructor: Mở file để ghi thông tin tracking
+    // Constructor mở file ghi thông tin tracking
     StackingAction::StackingAction()
     {
         outFile.open("track_info_verbose.txt", std::ios::app);  // Mở file ở chế độ append
@@ -19,7 +19,7 @@ namespace B3
         }
     }
 
-    // Destructor: Đóng file khi không còn sử dụng
+    // Destructor đóng file khi không còn sử dụng
     StackingAction::~StackingAction()
     {
         if (outFile.is_open()) {
@@ -27,20 +27,20 @@ namespace B3
         }
     }
 
-    // Phương thức xử lý và phân loại track
+    // Phương thức phân loại track
     G4ClassificationOfNewTrack StackingAction::ClassifyNewTrack(const G4Track* track)
     {
-        // keep primary particle
+        // Keep primary particle
         if (track->GetParentID() == 0) return fUrgent;
 
-        // kill secondary neutrino
+        // Kill secondary neutrino
         if (track->GetDefinition() == G4NeutrinoE::NeutrinoE())
             return fKill;
         else
             return fUrgent;
     }
 
-    // Hàm ghi thông tin mỗi khi một tracking event xảy ra
+    // Phương thức ghi thông tin mỗi khi một tracking event xảy ra
     void StackingAction::PostUserTrackingAction(const G4Track* track)
     {
         if (track) {
@@ -79,7 +79,5 @@ namespace B3
                 << std::endl;
         }
     }
-
-    //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 }  // namespace B3
