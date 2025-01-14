@@ -1,4 +1,4 @@
-//
+﻿//
 // ********************************************************************
 // * License and Disclaimer                                           *
 // *                                                                  *
@@ -32,7 +32,9 @@
 #include "G4NeutrinoE.hh"
 #include "G4Track.hh"
 
-#include <fstream> // Th�m th? vi?n ghi file
+#include "G4SystemOfUnits.hh"
+
+#include <fstream> // Thêm thư viện ghi file
 
 namespace B3
 {
@@ -41,15 +43,15 @@ namespace B3
 
 G4ClassificationOfNewTrack StackingAction::ClassifyNewTrack(const G4Track* track)
 {
-  // Ghi th�ng tin h?t v�o file
-  static std::ofstream outFile("stacking_data.txt", std::ios::app); // Ghi n?i ti?p
+  // Ghi thông tin hạt vào file
+  static std::ofstream outFile("stacking_data.txt", std::ios::app); // Ghi nối tiếp
 
   if (track) {
-        // L?y th�ng tin volume
+        // Lấy thông tin volume
         const G4VPhysicalVolume* volume = track->GetVolume();
         G4String volumeName = volume ? volume->GetName() : "Unknown";
 
-        // Ghi th�ng tin v�o file
+        // Ghi thông tin vào file
         outFile << "Track ID: " << track->GetTrackID()
             << ", Parent ID: " << track->GetParentID()
             << ", Particle: " << track->GetDefinition()->GetParticleName()
