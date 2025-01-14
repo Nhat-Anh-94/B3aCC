@@ -109,7 +109,7 @@ int main(int argc, char** argv)
     // interactive mode
     UImanager->ApplyCommand("/control/execute init_vis.mac");
 
-    UImanager->ApplyCommand("/tracking/verbose 2");
+    UImanager->ApplyCommand("/tracking/verbose 0");
     // Add a loop for /run/beamOn
     for (int i = 0; i < 7; ++i) { // Lặp lại 10 lần
         UImanager->ApplyCommand("/run/beamOn 1");
