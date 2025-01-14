@@ -1,75 +1,85 @@
-﻿//
-// ********************************************************************
-// * License and Disclaimer                                           *
-// *                                                                  *
-// * The  Geant4 software  is  copyright of the Copyright Holders  of *
-// * the Geant4 Collaboration.  It is provided  under  the terms  and *
-// * conditions of the Geant4 Software License,  included in the file *
-// * LICENSE and available at  http://cern.ch/geant4/license .  These *
-// * include a list of copyright holders.                             *
-// *                                                                  *
-// * Neither the authors of this software system, nor their employing *
-// * institutes,nor the agencies providing financial support for this *
-// * work  make  any representation or  warranty, express or implied, *
-// * regarding  this  software system or assume any liability for its *
-// * use.  Please see the license in the file  LICENSE  and URL above *
-// * for the full disclaimer and the limitation of liability.         *
-// *                                                                  *
-// * This  code  implementation is the result of  the  scientific and *
-// * technical work of the GEANT4 collaboration.                      *
-// * By using,  copying,  modifying or  distributing the software (or *
-// * any work based  on the software)  you  agree  to acknowledge its *
-// * use  in  resulting  scientific  publications,  and indicate your *
-// * acceptance of all terms of the Geant4 Software license.          *
-// ********************************************************************
-//
-//
-/// \file B3/B3a/src/StackingAction.cc
-/// \brief Implementation of the B3::StackingAction class
-
-#include "StackingAction.hh"
-
-#include "G4NeutrinoE.hh"
+﻿#include "StackingAction.hh"
 #include "G4Track.hh"
-
+#include "G4Step.hh"
 #include "G4SystemOfUnits.hh"
-
-#include <fstream> // Thêm thư viện ghi file
+#include "G4NeutrinoE.hh"
+#include <fstream>  // Thư viện ghi file
 
 namespace B3
 {
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+    //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
-G4ClassificationOfNewTrack StackingAction::ClassifyNewTrack(const G4Track* track)
-{
-  // Ghi thông tin hạt vào file
-  static std::ofstream outFile("stacking_data.txt", std::ios::app); // Ghi nối tiếp
+    // Constructor: Mở file để ghi thông tin tracking
+    StackingAction::StackingAction()
+    {
+        outFile.open("track_info_verbose.txt", std::ios::app);  // Mở file ở chế độ append
+        if (!outFile.is_open()) {
+            G4cerr << "Error: Unable to open file for writing!" << G4endl;
+        }
+    }
 
-  if (track) {
-        // Lấy thông tin volume
-        const G4VPhysicalVolume* volume = track->GetVolume();
-        G4String volumeName = volume ? volume->GetName() : "Unknown";
+    // Destructor: Đóng file khi không còn sử dụng
+    StackingAction::~StackingAction()
+    {
+        if (outFile.is_open()) {
+            outFile.close();
+        }
+    }
 
-        // Ghi thông tin vào file
-        outFile << "Track ID: " << track->GetTrackID()
-            << ", Parent ID: " << track->GetParentID()
-            << ", Particle: " << track->GetDefinition()->GetParticleName()
-            << ", Energy: " << track->GetKineticEnergy() / keV << " keV"
-            << ", Position: " << track->GetPosition() / mm << " mm"
-            << ", Volume: " << volumeName
-            << std::endl;
-  }
-  // keep primary particle
-  if (track->GetParentID() == 0) return fUrgent;
+    // Phương thức xử lý và phân loại track
+    G4ClassificationOfNewTrack StackingAction::ClassifyNewTrack(const G4Track* track)
+    {
+        // keep primary particle
+        if (track->GetParentID() == 0) return fUrgent;
 
-  // kill secondary neutrino
-  if (track->GetDefinition() == G4NeutrinoE::NeutrinoE())
-    return fKill;
-  else
-    return fUrgent;
-}
+        // kill secondary neutrino
+        if (track->GetDefinition() == G4NeutrinoE::NeutrinoE())
+            return fKill;
+        else
+            return fUrgent;
+    }
 
-//....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
+    // Hàm ghi thông tin mỗi khi một tracking event xảy ra
+    void StackingAction::PostUserTrackingAction(const G4Track* track)
+    {
+        if (track) {
+            // Thu thập thông tin cần thiết từ track và step
+            G4int trackID = track->GetTrackID();  // ID của track
+            G4String particleName = track->GetDefinition()->GetParticleName();  // Tên của hạt
+            G4double energy = track->GetKineticEnergy() / keV;  // Năng lượng của hạt (đơn vị keV)
+
+            // Lấy bước hiện tại của track
+            G4Step* step = track->GetStep();
+            G4ThreeVector position = step->GetPostStepPoint()->GetPosition();  // Vị trí cuối của bước
+            G4double x = position.x() / mm;  // Vị trí X
+            G4double y = position.y() / mm;  // Vị trí Y
+            G4double z = position.z() / mm;  // Vị trí Z
+
+            // Lấy thông tin từ bước (Step)
+            G4double dEStep = step->GetTotalEnergyDeposit() / keV;  // Năng lượng mất đi trong bước (keV)
+            G4double stepLength = step->GetStepLength() / cm;  // Chiều dài bước (cm)
+            G4double trackLength = track->GetTrackLength() / cm;  // Chiều dài của track (cm)
+
+            // Lấy thông tin volume
+            G4String volumeName = "None";  // Nếu hạt chưa vào volume, gán tên là "None"
+            if (step->GetPostStepPoint()->GetPhysicalVolume()) {
+                volumeName = step->GetPostStepPoint()->GetPhysicalVolume()->GetName();  // Tên volume hạt đang di chuyển qua
+            }
+
+            // Lấy quá trình (process) mà hạt đang trải qua
+            G4String processName = step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName();
+
+            // Ghi thông tin vào file theo định dạng giống verbose 2
+            outFile << "Step# " << step->GetStepNumber()
+                << "   " << x << " mm   " << y << " mm   " << z << " mm   "
+                << energy << " keV   " << dEStep << " keV   "
+                << stepLength << " cm   " << trackLength << " cm   "
+                << volumeName << "   " << processName
+                << std::endl;
+        }
+    }
+
+    //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
 }  // namespace B3
