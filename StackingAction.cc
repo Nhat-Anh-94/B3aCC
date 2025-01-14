@@ -1,7 +1,9 @@
 ﻿#include "StackingAction.hh"
 #include "G4Track.hh"
 #include "G4Step.hh"
-#include "G4VProcess.hh"  // Thêm vào để sử dụng G4VProcess
+#include "G4VProcess.hh"
+#include "G4NeutrinoE.hh"  // Thêm vào để sử dụng G4NeutrinoE
+#include "G4SystemOfUnits.hh"  // Thêm vào để sử dụng các đơn vị như keV
 #include <fstream>
 
 namespace B3
@@ -19,6 +21,8 @@ namespace B3
             return fKill;
         else
             return fUrgent;
+
+        return fUrgent;  // Đảm bảo trả về giá trị mặc định
     }
 
     //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
