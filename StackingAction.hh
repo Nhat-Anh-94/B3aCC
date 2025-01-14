@@ -21,7 +21,7 @@ namespace B3
         ~StackingAction() override = default;
 
         G4ClassificationOfNewTrack ClassifyNewTrack(const G4Track*) override;
-        void PostUserTrackingAction(const G4Track*) override;  // Hàm ghi thông tin mỗi bước
+        void PostUserTrackingAction(const G4Track* track);  // Không cần override
     };
 
 }  // namespace B3
