@@ -1,49 +1,50 @@
 ﻿#include "StackingAction.hh"
 #include "G4Track.hh"
 #include "G4Step.hh"
+#include "G4NeutrinoE.hh"
+#include "G4SystemOfUnits.hh"
 #include "G4VProcess.hh"
-#include "G4NeutrinoE.hh"  // Thêm vào để sử dụng G4NeutrinoE
-#include "G4SystemOfUnits.hh"  // Thêm vào để sử dụng các đơn vị như keV
-#include <fstream>
+#include <fstream>  // Thư viện cho việc ghi file
 
 namespace B3
 {
 
-    //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+    // Hàm phân loại track mới
     G4ClassificationOfNewTrack StackingAction::ClassifyNewTrack(const G4Track* track)
     {
-        // keep primary particle
+        // Giữ particle gốc
         if (track->GetParentID() == 0) return fUrgent;
 
-        // kill secondary neutrino
+        // Giết neutrino thứ cấp (nếu có)
         if (track->GetDefinition() == G4NeutrinoE::NeutrinoE())
             return fKill;
-        else
-            return fUrgent;
 
-        return fUrgent;  // Đảm bảo trả về giá trị mặc định
+        // Các particle khác vẫn được xử lý bình thường
+        return fUrgent;
     }
 
-    //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
-
+    // Hàm ghi thông tin của mỗi bước vào file
     void StackingAction::PostUserTrackingAction(const G4Track* track)
     {
-        const G4Step* step = track->GetStep(); // Dùng const G4Step* để tránh thay đổi
+        // Lấy bước hiện tại
+        const G4Step* step = track->GetStep();
 
-        // Lấy thông tin cần thiết
+        // Lấy các thông tin cần thiết
         G4String processName = step->GetPostStepPoint()->GetProcessDefinedStep()->GetProcessName();
         G4ThreeVector position = step->GetPostStepPoint()->GetPosition();
         G4double energy = track->GetKineticEnergy();
 
         // Ghi thông tin vào file
-        outFile.open("tracking_info.txt", std::ios_base::app);
+        std::ofstream outFile("tracking_info.txt", std::ios_base::app);  // Mở file ở chế độ append
         if (outFile.is_open()) {
-            outFile << "Step# " << step->GetTrack()->GetCurrentStepNumber() // Hoặc thay thế bằng số bước khác
+            outFile << "Step# " << step->GetTrack()->GetCurrentStepNumber()  // Số bước hiện tại
                 << ", Position: " << position
                 << ", Energy: " << energy / keV << " keV"
                 << ", Process: " << processName << std::endl;
-            outFile.close();
+            outFile.close();  // Đảm bảo đóng file sau khi ghi
+        }
+        else {
+            G4cout << "Error opening file for writing!" << G4endl;  // In ra lỗi nếu không mở được file
         }
     }
 
